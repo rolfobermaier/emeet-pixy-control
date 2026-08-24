@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=EMEET PIXY Control
+Comment=Control and preview the EMEET PIXY webcam
+Exec=@EXEC@
+Icon=emeet-pixy-control
+Terminal=false
+Categories=AudioVideo;Video;
+StartupNotify=true

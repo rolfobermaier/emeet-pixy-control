@@ -1,0 +1,13 @@
+[Unit]
+Description=EMEET PIXY Virtual Camera device
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/modprobe v4l2loopback
+ExecStart=/usr/local/lib/emeet-pixy-control/virtual-camera-device start
+ExecStop=/usr/local/lib/emeet-pixy-control/virtual-camera-device stop
+
+[Install]
+WantedBy=multi-user.target

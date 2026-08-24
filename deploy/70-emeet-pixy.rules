@@ -1,0 +1,2 @@
+# EMEET PIXY (USB 328f:00c0): allow the active desktop user to access HID controls.
+ACTION!="remove", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="328f", ATTRS{idProduct}=="00c0", MODE="0660", TAG+="uaccess"

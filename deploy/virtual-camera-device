@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+NAME="EMEET PIXY Virtual Camera"
+START=20
+END=29
+
+find_device() {
+    local path base name
+    shopt -s nullglob
+    for path in /sys/class/video4linux/video*/name; do
+        name=$(cat "$path" 2>/dev/null || true)
+        if [[ "$name" == "$NAME" ]]; then
+            base=$(basename "$(dirname "$path")")
+            printf '/dev/%s\n' "$base"
+            return 0
+        fi
+    done
+    return 1
+}
+
+start_device() {
+    local existing n dev
+    if existing=$(find_device); then
+        echo "$existing"
+        return 0
+    fi
+
+    for n in $(seq "$START" "$END"); do
+        dev="/dev/video${n}"
+        if [[ ! -e "$dev" ]]; then
+            /usr/bin/v4l2loopback-ctl add -n "$NAME" -x 1 "$dev"
+            return 0
+        fi
+    done
+
+    echo "No free video device found in /dev/video${START}..${END}" >&2
+    return 1
+}
+
+stop_device() {
+    local existing
+    if existing=$(find_device); then
+        /usr/bin/v4l2loopback-ctl delete "$existing"
+    fi
+}
+
+case "${1:-}" in
+    start) start_device ;;
+    stop)  stop_device ;;
+    status)
+        if find_device; then exit 0; else exit 1; fi
+        ;;
+    *)
+        echo "Usage: $0 start|stop|status" >&2
+        exit 2
+        ;;
+esac

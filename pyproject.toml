@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emeet-pixy-control"
+version = "0.1.0"
+description = "Unofficial native Linux control panel for the EMEET PIXY webcam"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+authors = [
+  {name = "Rolf Obermaier"}
+]
+keywords = ["EMEET", "PIXY", "webcam", "Linux", "PTZ", "v4l2", "v4l2loopback"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: X11 Applications :: Qt",
+  "Intended Audience :: End Users/Desktop",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Video",
+]
+dependencies = [
+  "PySide6>=6.8,<7",
+]
+
+[project.scripts]
+emeet-pixy-control = "emeet_pixy_control.gui:main"
+emeet-pixy-cli = "emeet_pixy_control.backend:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+emeet_pixy_control = ["assets/*.svg"]
